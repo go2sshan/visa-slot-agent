@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Visa Slot Watch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f5f4f0; --surface:#fcfcfb; --line:#e3e1db; --ink:#0b0b0b; --ink-2:#52514e; --ink-3:#8a8983;
+  --accent:#2a78d6; --good:#1f8a4c; --warn:#b26b00;
+  --seq-0:#fcfcfb; --seq-1:#cde2fb; --seq-2:#9ec5f4; --seq-3:#6da7ec; --seq-4:#3987e5; --seq-5:#256abf; --seq-6:#184f95;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#121211; --surface:#1a1a19; --line:#2e2e2b; --ink:#fff; --ink-2:#c3c2b7; --ink-3:#8f8e86;
+    --accent:#5598e7; --good:#4cc07e; --warn:#e3a33b;
+    --seq-0:#1a1a19; --seq-1:#0d366b; --seq-2:#104281; --seq-3:#1c5cab; --seq-4:#2a78d6; --seq-5:#5598e7; --seq-6:#9ec5f4;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121211; --surface:#1a1a19; --line:#2e2e2b; --ink:#fff; --ink-2:#c3c2b7; --ink-3:#8f8e86;
+  --accent:#5598e7; --good:#4cc07e; --warn:#e3a33b;
+  --seq-0:#1a1a19; --seq-1:#0d366b; --seq-2:#104281; --seq-3:#1c5cab; --seq-4:#2a78d6; --seq-5:#5598e7; --seq-6:#9ec5f4;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Inter,system-ui,sans-serif}
+.wrap{max-width:1080px;margin:0 auto;padding:28px 16px 64px}
+header{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:20px}
+h1{font-size:26px;margin:0;letter-spacing:-.02em}
+.sub{color:var(--ink-2);font-size:13px}
+.mono{font-family:"JetBrains Mono",monospace;font-size:12px}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0 20px}
+.tab{border:1px solid var(--line);background:var(--surface);color:var(--ink-2);border-radius:999px;padding:6px 14px;font:inherit;font-size:13px;font-weight:600;cursor:pointer}
+.tab[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:820px){.grid{grid-template-columns:repeat(2,1fr)}.big{font-size:18px}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px}
+.label{font-size:12px;color:var(--ink-2);font-weight:500;text-transform:uppercase;letter-spacing:.04em}
+.big{font-size:22px;font-weight:700;letter-spacing:-.01em;margin-top:4px}
+.small{font-size:13px;color:var(--ink-2)}
+.pill{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px;border:1px solid var(--line)}
+.row2{display:grid;grid-template-columns:1.6fr 1fr;gap:12px;margin-top:12px}
+@media(max-width:820px){.row2{grid-template-columns:1fr}}
+h2{font-size:15px;margin:0 0 4px}
+.heat{display:grid;grid-template-columns:40px repeat(12,1fr);gap:2px;margin-top:12px}
+.heat .c{aspect-ratio:1.4;border-radius:4px;background:var(--seq-0);outline:1px solid var(--line);outline-offset:-1px;position:relative}
+.heat .c.top{box-shadow:inset 0 0 0 2px var(--ink)}
+.heat .h,.heat .d{font-size:11px;color:var(--ink-3);display:flex;align-items:center}
+.heat .h{justify-content:center}
+.legend{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--ink-3);margin-top:10px}
+.legend i{width:18px;height:10px;border-radius:3px;display:inline-block}
+.tip{position:fixed;pointer-events:none;background:var(--ink);color:var(--bg);font-size:12px;padding:6px 9px;border-radius:8px;opacity:0;transition:opacity .1s;z-index:10;white-space:nowrap}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;color:var(--ink-2);font-weight:500;font-size:12px;padding:6px 8px;border-bottom:1px solid var(--line)}
+td{padding:7px 8px;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+.tablewrap{overflow-x:auto}
+.win{display:flex;justify-content:space-between;gap:8px;padding:8px 0;border-bottom:1px solid var(--line)}
+.win:last-child{border:0}
+.bar{height:6px;border-radius:3px;background:var(--accent);margin-top:4px}
+.note{font-size:12px;color:var(--ink-3);margin-top:16px}
+.err{color:var(--warn);font-size:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Visa Slot Watch · India</h1>
+      <div class="sub">L1A · L2 · B1 · B2 · B1/B2 · H1B · H4 &nbsp;·&nbsp; Chennai, Hyderabad, Mumbai, New Delhi, Kolkata</div>
+    </div>
+    <div class="sub" id="updated">Loading…</div>
+  </header>
+
+  <div class="tabs" id="tabs" role="group" aria-label="Visa type"></div>
+
+  <div class="grid">
+    <div class="card"><div class="label">Next best check</div><div class="big" id="k-next">–</div><div class="small" id="k-next2"></div></div>
+    <div class="card"><div class="label">Expected appointment</div><div class="big" id="k-date">–</div><div class="small" id="k-date2"></div></div>
+    <div class="card"><div class="label">Drops, last 60 days</div><div class="big" id="k-n">–</div><div class="small" id="k-gap"></div></div>
+    <div class="card"><div class="label">Latest sighting</div><div class="big" id="k-last">–</div><div class="small" id="k-last2"></div></div>
+  </div>
+
+  <div class="row2">
+    <div class="card">
+      <h2>When slots drop (IST, last 60 days)</h2>
+      <div class="small">Darker = more openings seen. Outlined cells are the predicted best windows.</div>
+      <div class="heat" id="heat"></div>
+      <div class="legend" id="legend"></div>
+    </div>
+    <div class="card">
+      <h2>Best windows to check</h2>
+      <div id="wins"></div>
+      <h2 style="margin-top:18px">Best posts (30 days)</h2>
+      <div id="posts" class="small"></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <h2>Recent sightings</h2>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Seen (your time)</th><th>Post</th><th>Visa</th><th>Earliest date</th><th>Seats</th><th>Dates open</th></tr></thead>
+      <tbody id="recent"></tbody>
+    </table></div>
+  </div>
+  <div class="note">Data: crowd-sourced sightings from checkvisaslots.com, refreshed every ~10 min. Forecasts are statistical patterns, not guarantees — always confirm on the official portal. <span id="errs" class="err"></span></div>
+</div>
+<div class="tip" id="tip"></div>
+
+<script>
+const DAYS=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+const hr=h=>{h%=24;return `${(h%12)||12}${h<12?'a':'p'}`};
+let D, fam;
+const $=id=>document.getElementById(id);
+const fmtDate=s=>new Date(s+"T00:00:00").toLocaleDateString(undefined,{weekday:"short",day:"numeric",month:"short",year:"numeric"});
+const fmtLocal=s=>new Date(s).toLocaleString(undefined,{weekday:"short",day:"numeric",month:"short",hour:"numeric",minute:"2-digit"});
+
+function render(){
+  const p=D.predictions[fam];
+  document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-pressed",t.dataset.f===fam));
+  const nw=p.next_window;
+  $("k-next").textContent=nw?fmtLocal(nw.next_start_utc):"–";
+  $("k-next2").textContent=nw?`${nw.ist} · ~${nw.share}% of drops`:"";
+  const pa=p.predicted_appointment;
+  $("k-date").textContent=pa?fmtDate(pa.likely):"Learning…";
+  $("k-date2").textContent=pa?`Best case ${fmtDate(pa.best_case)} · ~${p.median_lead_days} days out`:"Needs a few sightings";
+  $("k-n").textContent=p.events_60d;
+  $("k-gap").innerHTML=`Confidence: <span class="pill">${p.confidence}</span>`+(p.median_gap_hours?` · every ~${p.median_gap_hours}h`:"");
+  const l=p.last_seen;
+  $("k-last").textContent=l?fmtDate(l.earliest_date):"–";
+  $("k-last2").textContent=l?`${l.location} · seen ${fmtLocal(l.seen_utc)}`:"";
+
+  // heatmap
+  const H=p.heat_ist, max=Math.max(1,...H.flat());
+  const topSet=new Set(p.top_windows.map(w=>w.ist));
+  let html='<div></div>'+Array.from({length:12},(_,b)=>`<div class="h">${b%2?"":hr(b*2)}</div>`).join("");
+  H.forEach((row,d)=>{
+    html+=`<div class="d">${DAYS[d]}</div>`;
+    row.forEach((v,b)=>{
+      const step=v?Math.min(6,1+Math.floor(5*v/max)):0;
+      const isTop=topSet.has(`${DAYS[d]} ${blockLabel(b)} IST`);
+      html+=`<div class="c${isTop?" top":""}" style="background:var(--seq-${step})" data-t="${DAYS[d]} ${blockLabel(b)} IST — ${v} drop${v==1?"":"s"}"></div>`;
+    });
+  });
+  $("heat").innerHTML=html;
+  $("legend").innerHTML="Fewer "+[1,2,3,4,5,6].map(i=>`<i style="background:var(--seq-${i})"></i>`).join("")+" More";
+
+  $("wins").innerHTML=p.top_windows.map(w=>`<div class="win"><div><div style="font-weight:600">${w.ist}</div><div class="small">Next: ${fmtLocal(w.next_start_utc)}</div></div><div style="min-width:70px;text-align:right"><div class="mono">${w.share}%</div><div class="bar" style="width:${Math.max(6,w.share)}%;margin-left:auto"></div></div></div>`).join("");
+
+  const bl=D.best_locations[fam]||[];
+  $("posts").innerHTML=bl.length?bl.map((b,i)=>`<div class="win"><div><b style="color:var(--ink)">${i+1}. ${b.location}</b></div><div>${b.sightings_30d} drops · ~${b.median_lead_days}d out</div></div>`).join(""):"Not enough data yet.";
+
+  const rows=D.recent.filter(r=>r.family===fam).slice(0,60);
+  $("recent").innerHTML=rows.length?rows.map(r=>`<tr><td>${fmtLocal(r.seen_utc)}</td><td>${r.location}</td><td>${r.visa_label}</td><td><b>${fmtDate(r.earliest_date)}</b></td><td>${r.slots??"N/A"}</td><td>${r.total_dates??"N/A"}</td></tr>`).join(""):`<tr><td colspan="6" class="small">No sightings in the last 14 days.</td></tr>`;
+}
+function blockLabel(b){const f=h=>{h%=24;return `${(h%12)||12} ${h<12?"AM":"PM"}`};return `${f(b*2)}–${f(b*2+2)}`}
+
+const tip=$("tip");
+document.addEventListener("mousemove",e=>{
+  const c=e.target.closest(".c");
+  if(!c){tip.style.opacity=0;return}
+  tip.textContent=c.dataset.t;tip.style.opacity=1;
+  tip.style.left=Math.min(e.clientX+12,innerWidth-tip.offsetWidth-8)+"px";tip.style.top=(e.clientY+14)+"px";
+});
+
+fetch("data.json?"+Date.now()).then(r=>r.json()).catch(()=>window.__DATA__).then(d=>{
+  D=d||window.__DATA__; fam=D.families[0];
+  $("tabs").innerHTML=D.families.map(f=>`<button class="tab" data-f="${f}">${f}</button>`).join("");
+  $("tabs").onclick=e=>{const t=e.target.closest(".tab");if(t){fam=t.dataset.f;render()}};
+  $("updated").textContent="Updated "+fmtLocal(D.generated_utc)+` · group of ${D.group_size}`;
+  if(D.fetch_errors&&D.fetch_errors.length)$("errs").textContent=` ${D.fetch_errors.length} page(s) failed on last run.`;
+  render();
+});
+setInterval(()=>location.reload(),10*60*1000);
+</script>
+</body>
+</html>
