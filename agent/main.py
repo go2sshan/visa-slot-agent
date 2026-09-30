@@ -47,9 +47,9 @@ def run(fixture_dir: Path | None = None, now: datetime | None = None) -> dict:
     else:
         fresh, errors = fetcher.fetch_all(cfg["visa_types"], cfg.get("request_delay_seconds", 2))
 
-    first_run = not HISTORY.exists()
-    history, new = store.merge(HISTORY, fresh)
     state = store.load_state(STATE)
+    first_run = not state.get("started")
+    history, new = store.merge(HISTORY, fresh)
 
     families = list(cfg["visa_types"].keys())
     preds = {f: predictor.analyze(history, f, None, now, local_tz) for f in families}
@@ -59,6 +59,7 @@ def run(fixture_dir: Path | None = None, now: datetime | None = None) -> dict:
     if first_run:
         notify.send(f"✅ Visa slot agent started. Watching {', '.join(families)} at "
                     f"{len(cfg['locations'])} posts. Seeded {len(new)} recent sightings.")
+        state["started"] = True
     else:
         for s in sorted(new, key=lambda x: x.earliest_date):
             if not wanted(s, cfg):
@@ -96,6 +97,12 @@ def run(fixture_dir: Path | None = None, now: datetime | None = None) -> dict:
         "recent": recent,
         "fetch_errors": errors,
     }, indent=1))
+
+    # if the data source is unreachable, say so at most once a day (not every run)
+    if errors and not fresh and state.get("last_block_alert") != local_now.date().isoformat():
+        notify.send(f"⚠️ Visa slot agent couldn't read the tracker ({len(errors)} pages failed, "
+                    f"e.g. {errors[0][:120]}). No slot data this run.")
+        state["last_block_alert"] = local_now.date().isoformat()
 
     state["last_run_utc"] = now.isoformat()
     state["last_errors"] = errors
