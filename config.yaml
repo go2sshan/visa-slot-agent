@@ -1,0 +1,59 @@
+# ---------------------------------------------------------------
+# US Visa Slot Agent — India (all 5 posts)
+# Edit this file, commit, and the next GitHub Actions run uses it.
+# ---------------------------------------------------------------
+
+# How many people are on ONE booking (you + spouse + kids).
+# The portal only shows a slot if it has at least this many seats.
+group_size: 1
+
+# Only alert for appointment dates on or before this date (YYYY-MM-DD).
+# Leave blank to alert on everything.
+latest_acceptable_date: "2027-03-31"
+
+# Posts to watch. "VAC" = biometrics (OFC) appointment; no suffix = consulate interview.
+locations:
+  - CHENNAI
+  - CHENNAI VAC
+  - HYDERABAD
+  - HYDERABAD VAC
+  - MUMBAI
+  - MUMBAI VAC
+  - NEW DELHI
+  - NEW DELHI VAC
+  - KOLKATA
+  - KOLKATA VAC
+
+# Visa families -> tracker page slugs on checkvisaslots.com
+# (https://checkvisaslots.com/latest-us-visa-availability/<slug>/)
+visa_types:
+  L1A:
+    - l-1-blanket-regular
+    - l-1-individual-regular
+  L2:
+    - l-2-blanket-regular
+    - l-2-individual-regular
+  B1:
+    - b1-regular
+  B2:
+    - b2-regular
+  B1/B2:
+    - b1-b2-regular
+    - b1b2-general-regular
+    - b1b2-business-professionals-regular
+    - b1b2-parents-visiting-children-regular
+    - b1-b2-dropbox
+  H1B:
+    - h-1b-regular
+    - h-1b-interview-waiver
+  H4:
+    - h-4-regular
+
+# Your local timezone for alerts (the tracker reports UTC).
+local_timezone: "America/Indiana/Indianapolis"
+
+# Send a prediction digest once a day at this local hour (0-23). -1 = off.
+daily_digest_hour: 8
+
+# Seconds to wait between page requests (be polite to the tracker).
+request_delay_seconds: 2
